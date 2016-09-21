@@ -19,41 +19,33 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);//这句要在setContentView之前，用于隐藏标题栏
         setContentView(R.layout.activity_main);
         final ToggleButton togglebutton = (ToggleButton) findViewById(R.id.toggleButton);
+       final Camera  camera = Camera.open();
+
+       final Parameters parameter = camera.getParameters();
+
         togglebutton.setOnClickListener(new View.OnClickListener() {
-                      public void onClick(View v) {
-                               // 当按钮第一次被点击时候响应的事件
-                               if (togglebutton.isChecked()) {
+            public void onClick(View v) {
+                // 当按钮第一次被点击时候响应的事件
+                if (togglebutton.isChecked()) {
 
-                                       Toast.makeText(MainActivity.this, "神说，要有光，于是便有了光", Toast.LENGTH_SHORT).show();
-                                   Camera  camera = Camera.open(1);
+                    Toast.makeText(MainActivity.this, "神说，要有光，于是便有了光", Toast.LENGTH_SHORT).show();
 
+                    parameter.setFlashMode(Parameters.FLASH_MODE_TORCH);
 
+                    camera.setParameters(parameter);
+                }
+                // 当按钮再次被点击时候响应的事件
+                else {
+                    Toast.makeText(MainActivity.this, "神说，要有黑夜，于是便有了黑夜", Toast.LENGTH_SHORT).show();
 
-                                   camera.startPreview();
+                    parameter.setFlashMode(Parameters.FLASH_MODE_OFF);
 
-                                   Camera.Parameters parameter = camera.getParameters();
+                    camera.setParameters(parameter);
+                    //camera.release();
 
-                                   parameter.setFlashMode(Parameters.FLASH_MODE_TORCH);
-
-                                   camera.setParameters(parameter);
-                                  }
-                          // 当按钮再次被点击时候响应的事件
-                               else {
-                                      Toast.makeText(MainActivity.this, "神说，要有黑夜，于是便有了黑夜", Toast.LENGTH_SHORT).show();
-                                   Camera  camera = Camera.open(1);
-
-                                   camera.startPreview();
-                                   Camera.Parameters parameter = camera.getParameters();
-
-
-                                   parameter.setFlashMode(Parameters.FLASH_MODE_OFF);
-
-                                   camera.setParameters(parameter);
-                                   camera.release();
-
-                               }
-                            }
-                      });
+                }
+            }
+        });
 
     }
 }
